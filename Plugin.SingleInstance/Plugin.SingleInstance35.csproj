@@ -31,9 +31,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="SAL.Flatbed, Version=1.2.10.0, Culture=neutral, PublicKeyToken=a8ac5fc45c3adb8d, processorArchitecture=MSIL">
-      <HintPath>..\packages\SAL.Flatbed.1.2.10\lib\net20\SAL.Flatbed.dll</HintPath>
-      <Private>False</Private>
+    <Reference Include="SAL.Flatbed, Version=1.2.11.0, Culture=neutral, PublicKeyToken=a8ac5fc45c3adb8d">
+      <HintPath>..\packages\SAL.Flatbed.1.2.11\lib\net20\SAL.Flatbed.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Runtime.Remoting" />
