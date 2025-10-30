@@ -1,0 +1,3 @@
+[submodule "Images.Shared"]
+	path = Images.Shared
+	url = https://github.com/DKorablin/Images.Shared
