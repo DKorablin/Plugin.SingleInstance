@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Runtime.Remoting;
-using System.Runtime.Remoting.Channels;
-using System.Runtime.Remoting.Channels.Ipc;
 using System.Threading;
+using Plugin.SingleInstance.Logic;
 
 namespace Plugin.SingleInstance
 {
@@ -17,7 +15,7 @@ namespace Plugin.SingleInstance
 		public static Boolean CreateSingleInstance(TraceSource trace, String name, EventHandler<InstanceCallbackEventArgs> callback)
 		{
 			EventWaitHandle eventWaitHandle = null;
-			String eventName = String.Join("-", new String[] { Environment.MachineName, name });
+			String eventName = $"{Environment.MachineName}-{name}";
 
 			InstanceProxy.IsFirstInstance = false;
 			InstanceProxy.CommandLineArgs = Environment.GetCommandLineArgs();
@@ -28,81 +26,41 @@ namespace Plugin.SingleInstance
 				eventWaitHandle = EventWaitHandle.OpenExisting(eventName);
 			} catch
 			{
+				// init handle
+				eventWaitHandle = new EventWaitHandle(false, EventResetMode.AutoReset, eventName);
+
 				// got exception = handle wasn't created yet
 				InstanceProxy.IsFirstInstance = true;
 			}
 
+			IInstanceCommunicator communicator =
+#if NETFRAMEWORK
+				new LegacyRemotingCommunicator();
+#else
+				new NamedPipeCommunicator();
+#endif
+
 			if(InstanceProxy.IsFirstInstance)
 			{
-				// init handle
-				eventWaitHandle = new EventWaitHandle(false, EventResetMode.AutoReset, eventName);
+				communicator.RegisterServer(name);
 
 				// register wait handle for this instance (process)
-				ThreadPool.RegisterWaitForSingleObject(eventWaitHandle, WaitOrTimerCallback, callback, Timeout.Infinite, false);
-				eventWaitHandle.Close();
-
-				// register shared type (used to pass data between processes)
-				RegisterRemoteType(name);
+				ThreadPool.RegisterWaitForSingleObject(eventWaitHandle, (_, __) =>
+				{
+					callback?.Invoke(null, new InstanceCallbackEventArgs(InstanceProxy.IsFirstInstance, Environment.GetCommandLineArgs()));
+				}, null, Timeout.Infinite, false);
 			} else
 			{
 				// pass console arguments to shared object
-				UpdateRemoteObject(name);
+				communicator.SendMessage(name, Environment.GetCommandLineArgs());
 
-				// invoke (signal) wait handle on other process
-				eventWaitHandle?.Set();
+				trace.TraceEvent(TraceEventType.Stop, 1, "Another instance already running");
 
-				trace.TraceEvent(TraceEventType.Stop, 1, "Anoter instance already running");
 				// kill current process
 				Environment.Exit(0);
 			}
 
 			return InstanceProxy.IsFirstInstance;
-		}
-
-		/// <summary>Updates the remote object.</summary>
-		/// <param name="url">The remote URI.</param>
-		private static void UpdateRemoteObject(String url)
-		{
-			// register net-pipe channel
-			IpcClientChannel clientChannel = new IpcClientChannel();
-			ChannelServices.RegisterChannel(clientChannel, true);
-
-			// get shared object from other process
-			InstanceProxy proxy =
-				Activator.GetObject(typeof(InstanceProxy),
-				$"ipc://{Environment.MachineName}{url}/{url}") as InstanceProxy;
-
-			// pass current command line args to proxy
-			proxy?.SetCommandLineArgs(InstanceProxy.IsFirstInstance, InstanceProxy.CommandLineArgs);
-
-			// close current client channel
-			ChannelServices.UnregisterChannel(clientChannel);
-		}
-
-		/// <summary>Registers the remote type.</summary>
-		/// <param name="url">The URI.</param>
-		private static void RegisterRemoteType(String url)
-		{
-			// register remote channel (net-pipes)
-			IpcServerChannel serverChannel = new IpcServerChannel(Environment.MachineName + url);
-			ChannelServices.RegisterChannel(serverChannel, true);
-
-			// register shared type
-			RemotingConfiguration.RegisterWellKnownServiceType(
-				typeof(InstanceProxy), url, WellKnownObjectMode.Singleton);
-
-			// close channel, on process exit
-			Process process = Process.GetCurrentProcess();
-			process.Exited += delegate { ChannelServices.UnregisterChannel(serverChannel); };
-		}
-
-		/// <summary>Wait Or Timer Callback Handler</summary>
-		/// <param name="state">The state.</param>
-		/// <param name="timedOut">if set to <c>true</c> [timed out].</param>
-		private static void WaitOrTimerCallback(Object state, Boolean timedOut)
-		{
-			if(state is EventHandler<InstanceCallbackEventArgs> callback)
-				callback(state, new InstanceCallbackEventArgs(InstanceProxy.IsFirstInstance, InstanceProxy.CommandLineArgs));
 		}
 	}
 }

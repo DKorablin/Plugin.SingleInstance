@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Security;
-using System.Security.Permissions;
 
 namespace Plugin.SingleInstance
 {
 	/// <summary>shared object for processes</summary>
 	[Serializable]
-	[PermissionSet(SecurityAction.Demand, Name = "FullTrust")]
 	internal class InstanceProxy : MarshalByRefObject
 	{
 		/// <summary>Gets a value indicating whether this instance is first instance.</summary>

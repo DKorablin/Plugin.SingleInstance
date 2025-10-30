@@ -6,7 +6,9 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{29EFF129-D181-471B-939B-05374FAEB871}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
-		Plugin.SingleInstance.dll.nuspec = Plugin.SingleInstance.dll.nuspec
+		Directory.Build.props = Directory.Build.props
+		Directory.Build.targets = Directory.Build.targets
+		Directory.Packages.props = Directory.Packages.props
 		README.md = README.md
 	EndProjectSection
 EndProject
@@ -17,7 +19,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Workflows", "Workflows", "{
 		.github\workflows\test.yml = .github\workflows\test.yml
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Plugin.SingleInstance35", "Plugin.SingleInstance\Plugin.SingleInstance35.csproj", "{D3938EAB-6B01-4967-BDD4-AA51BAF6C4B8}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Scripts", "Scripts", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+	ProjectSection(SolutionItems) = preProject
+		.github\scripts\Build-ReleasePackage.ps1 = .github\scripts\Build-ReleasePackage.ps1
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Plugin.SingleInstance", "Plugin.SingleInstance\Plugin.SingleInstance.csproj", "{6BA5A5B3-91BF-759E-B91C-72FCEE950A1F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,16 +32,17 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{D3938EAB-6B01-4967-BDD4-AA51BAF6C4B8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D3938EAB-6B01-4967-BDD4-AA51BAF6C4B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D3938EAB-6B01-4967-BDD4-AA51BAF6C4B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D3938EAB-6B01-4967-BDD4-AA51BAF6C4B8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6BA5A5B3-91BF-759E-B91C-72FCEE950A1F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6BA5A5B3-91BF-759E-B91C-72FCEE950A1F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6BA5A5B3-91BF-759E-B91C-72FCEE950A1F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6BA5A5B3-91BF-759E-B91C-72FCEE950A1F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{06D963D4-9A0B-4B2B-A3C3-B1A534140FD0} = {29EFF129-D181-471B-939B-05374FAEB871}
+		{02EA681E-C7D8-13C7-8484-4AC65E1B71E8} = {29EFF129-D181-471B-939B-05374FAEB871}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {BA4632CB-F2AC-4E96-82A0-59488827569D}

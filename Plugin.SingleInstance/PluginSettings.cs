@@ -17,7 +17,7 @@ namespace Plugin.SingleInstance
 		[Description("Limit application to the single instance")]
 		public Boolean Enable { get; set; }
 
-		/// <summary>Получить наименование приложения для которого прописывается функция автозапуска</summary>
+		/// <summary>Get the name of the application for which the autoStart function is registered</summary>
 		internal String ApplicationName
 		{
 			get

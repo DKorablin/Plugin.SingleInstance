@@ -1,0 +1,54 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<TargetFrameworks>net35;net8.0-windows</TargetFrameworks>
+		<UseWindowsForms>true</UseWindowsForms>
+		<OutputType>Library</OutputType>
+		<RootNamespace>Plugin.SingleInstance</RootNamespace>
+		<Configuration>Debug</Configuration>
+		<Deterministic>false</Deterministic>
+		<GenerateAssemblyInfo>False</GenerateAssemblyInfo>
+		<GeneratePackageOnBuild>False</GeneratePackageOnBuild>
+		<GenerateDocumentationFile>False</GenerateDocumentationFile>
+		<CopyLocalLockFileAssemblies>True</CopyLocalLockFileAssemblies>
+		<NoWarn>CA1416</NoWarn>
+	</PropertyGroup>
+
+	<ItemGroup Condition="'$(TargetFramework)' == 'net8.0-windows'">
+		<AssemblyAttributes Include="AssemblyMetadata">
+			<_Parameter1>ProjectUrl</_Parameter1>
+			<_Parameter2>https://github.com/DKorablin/Plugin.SingleInstance</_Parameter2>
+		</AssemblyAttributes>
+	</ItemGroup>
+
+	<PropertyGroup Condition="'$(Configuration)'=='Release'">
+		<Optimize>true</Optimize>
+		<PublishSingleFile>true</PublishSingleFile>
+		<TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="SAL.Flatbed">
+			<ExcludeAssets>runtime</ExcludeAssets>
+		</PackageReference>
+		<Reference Include="System.Runtime.Remoting" Condition="'$(TargetFramework)' == 'net35'" />
+	</ItemGroup>
+
+	<!--nuspec-->
+	<PropertyGroup>
+		<PackageId>AlphaOmega.SAL.Plugin.SingleInstance</PackageId>
+		<Version>$(Version)</Version>
+		<Title>Limit application to single instance</Title>
+		<Description>The plugin allows you to limit the application to a single instance. If a similar downloaded application is found exists by a command Environment.Exit(0). .NET Remoting is used to detect a single application instance.</Description>
+		<Authors>Danila Korablin</Authors>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<PackageReadmeFile>docs\README.md</PackageReadmeFile>
+		<PackageIcon>docs\SAL.100.png</PackageIcon>
+		<RepositoryUrl>https://github.com/DKorablin/Plugin.SingleInstance</RepositoryUrl>
+		<PackageTags>SAL;plugin;Windows;SingleInstance;WinApi</PackageTags>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<None Include="..\README.md" Pack="true" PackagePath="\docs" />
+		<None Include="..\Images.Shared\SAL.100.png" Pack="true" PackagePath="\docs" />
+	</ItemGroup>
+</Project>
