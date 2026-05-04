@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.Threading;
 using Plugin.SingleInstance.Logic;
+using SAL.Flatbed;
 
 namespace Plugin.SingleInstance
 {
@@ -12,7 +13,7 @@ namespace Plugin.SingleInstance
 		/// <param name="name">The name.</param>
 		/// <param name="callback">The callback.</param>
 		/// <returns></returns>
-		public static Boolean CreateSingleInstance(TraceSource trace, String name, EventHandler<InstanceCallbackEventArgs> callback)
+		public static Boolean CreateSingleInstance(ITraceSource trace, String name, EventHandler<InstanceCallbackEventArgs> callback)
 		{
 			EventWaitHandle eventWaitHandle = null;
 			String eventName = $"{Environment.MachineName}-{name}";

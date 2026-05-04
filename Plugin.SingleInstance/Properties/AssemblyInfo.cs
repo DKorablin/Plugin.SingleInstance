@@ -3,5 +3,3 @@ using System.Runtime.InteropServices;
 
 [assembly: Guid("0837f1bb-fb6b-42fe-8f4d-1ee0706caa47")]
 [assembly: System.CLSCompliant(true)]
-
-[assembly: AssemblyCopyright("Copyright © Danila Korablin 2011-2025")]
