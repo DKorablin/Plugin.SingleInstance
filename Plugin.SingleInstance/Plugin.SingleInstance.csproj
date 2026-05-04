@@ -30,7 +30,6 @@
 		<PackageReference Include="SAL.Flatbed">
 			<ExcludeAssets>runtime</ExcludeAssets>
 		</PackageReference>
-		<Reference Include="System.Runtime.Remoting" Condition="'$(TargetFramework)' == 'net35'" />
 	</ItemGroup>
 
 	<!--nuspec-->

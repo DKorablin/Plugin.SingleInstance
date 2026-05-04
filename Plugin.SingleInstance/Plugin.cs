@@ -11,7 +11,7 @@ namespace Plugin.SingleInstance
 		internal IHost Host { get; }
 
 		/// <summary>Settings for interaction from the host</summary>
-		Object IPluginSettings.Settings { get => this.Settings; }
+		Object IPluginSettings.Settings => this.Settings;
 
 		/// <summary>Settings for interaction from the plugin</summary>
 		public PluginSettings Settings
@@ -27,7 +27,7 @@ namespace Plugin.SingleInstance
 			}
 		}
 
-		internal ITraceSource Trace { get; }
+		private ITraceSource Trace { get; }
 
 		public Plugin(IHost host, ITraceSource trace)
 		{

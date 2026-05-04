@@ -34,12 +34,7 @@ namespace Plugin.SingleInstance
 				InstanceProxy.IsFirstInstance = true;
 			}
 
-			IInstanceCommunicator communicator =
-#if NETFRAMEWORK
-				new LegacyRemotingCommunicator();
-#else
-				new NamedPipeCommunicator();
-#endif
+			IInstanceCommunicator communicator = new NamedPipeCommunicator();
 
 			if(InstanceProxy.IsFirstInstance)
 			{
